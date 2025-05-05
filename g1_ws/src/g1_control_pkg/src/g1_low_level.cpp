@@ -60,7 +60,7 @@ enum G1JointIndex {
 class low_level_cmd_sender : public rclcpp::Node
 {
 public:
-    low_level_cmd_sender() : Node("low_level_cmd_sender")
+    low_level_cmd_sender() : Node("g1_low_level_node")
     {
         auto topic_name = "lf/lowstate";
         if (HIGH_FREQ)

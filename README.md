@@ -149,6 +149,31 @@ You can see the robot status information output from the terminal:
 [INFO] [1697525196.316189064] [motion_state_suber]: Gait state -- gait type: 1; raise height: 0.090000
 ```
 
+# Unitree G1 ROS2 
+Compile and rund Unitree G1 packages 
+
+## 1. Enter Development and debugging Mode
+Use remote control to enter Debug Mode
+- **Press L2+R2 to exit the operation mode**
+- **Then Press L2+A to enterd debug mode** 
+
+## 2. Compile and launch Unitree G1 ROS2 packages
+Make sure to source all the setup file
+
+```bash
+source /opt/ros/foxy/setup.bash 
+source ~/unitree_ros2/setup.sh
+```
+
+After Compiling unitree_go and unitree_api packages run the flowing command to compile Unitee_g1 packages
+
+```bash
+cd ~/unitree_ros2/g1_ws
+colcon build 
+source install/setup.bash 
+ros2 launch g1_control_pkg g1.launch.py 
+```
+
 # Usage
 ## State acquisition
 ### 1. Sportmode state

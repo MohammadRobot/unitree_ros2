@@ -15,6 +15,19 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+include_directories(include include/common include/nlohmann)
+link_directories(src)
+
+set (
+  DEPENDENCY_LIST
+  unitree_go
+  unitree_hg
+  unitree_api
+  rclcpp
+  std_msgs
+  rosbag2_cpp
+)
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
@@ -22,6 +35,10 @@ find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(unitree_go REQUIRED)
+find_package(unitree_hg REQUIRED)
+find_package(unitree_api REQUIRED)
+find_package(rosbag2_cpp REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -33,5 +50,19 @@ if(BUILD_TESTING)
   #set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+add_executable(g1_low_level_node src/g1_low_level.cpp src/common/motor_crc_hg.cpp)
+ament_target_dependencies(g1_low_level_node ${DEPENDENCY_LIST})
+
+install(TARGETS 
+  g1_low_level_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+# Install launch files.
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
+)
 
 ament_package()
