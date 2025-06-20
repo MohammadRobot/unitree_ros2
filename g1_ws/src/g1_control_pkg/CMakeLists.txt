@@ -15,8 +15,24 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-include_directories(include include/common include/nlohmann)
-link_directories(src)
+# include_directories(include include/common include/nlohmann )
+# link_directories(src)
+
+# Include unitree_sdk2 headers
+include_directories(
+  include
+  include/common
+  include/nlohmann 
+  /opt/unitree_robotics/include
+  /opt/unitree_robotics/include/ddscxx
+)
+
+# Link to unitree_sdk2 libraries
+link_directories(
+  /opt/unitree_robotics/lib
+)
+
+
 
 set (
   DEPENDENCY_LIST
@@ -54,8 +70,18 @@ endif()
 add_executable(g1_low_level_node src/g1_low_level.cpp src/common/motor_crc_hg.cpp)
 ament_target_dependencies(g1_low_level_node ${DEPENDENCY_LIST})
 
+
+add_executable(g1_audio_client_node src/audio/g1_audio_client.cpp)
+ament_target_dependencies(g1_audio_client_node ${DEPENDENCY_LIST})
+target_link_libraries(g1_audio_client_node
+  unitree_sdk2
+  ddsc
+  ddscxx
+)
+
 install(TARGETS 
   g1_low_level_node
+  g1_audio_client_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
